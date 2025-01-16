@@ -1,0 +1,203 @@
+EVM - Puzzles
+----------------------------------------------------------------------------
+Puzzle 1:
+
+00          34          CALLVALUE
+01          56          JUMP
+02          FD          REVERT
+03          FD          REVERT
+04          FD          REVERT
+05          FD          REVERT
+06          FD          REVERT
+07          FD          REVERT
+08          5B          JUMPDEST
+09          00          STOP
+
+
+- We need to Jump(01) to Jumpdest(08).
+- Call Value will read the msg.value and push to stack.
+- So we need to send 8 as msg.value to Jump to PC 08.
+----------------------------------------------------------------------------
+Puzzle 2:
+
+00      34      CALLVALUE
+01      38      CODESIZE
+02      03      SUB
+03      56      JUMP
+04      FD      REVERT
+05      FD      REVERT
+06      5B      JUMPDEST
+07      00      STOP
+08      FD      REVERT
+09      FD      REVERT
+
+- We need to jump(03) to jumpdest(06).
+- We need to ensure that codesize-callvalue= 6.
+- we have a bytecode size of (10 opcodes) so sending 4, 10-4 =6.
+----------------------------------------------------------------------------
+Puzzle 3:
+
+00      36      CALLDATASIZE
+01      56      JUMP
+02      FD      REVERT
+03      FD      REVERT
+04      5B      JUMPDEST
+05      00      STOP
+
+- We need to jump(01) to jumpdest(04).
+- We need CallDataSize = 4.
+- So we can send a bytesize of 4 by doing "0x00000000".
+----------------------------------------------------------------------------
+Puzzle 4:
+
+00      34      CALLVALUE 
+01      38      CODESIZE 
+02      18      XOR
+03      56      JUMP
+04      FD      REVERT
+05      FD      REVERT
+06      FD      REVERT
+07      FD      REVERT
+08      FD      REVERT
+09      FD      REVERT
+0A      5B      JUMPDEST
+0B      00      STOP
+
+- We need to jump(03) to jumpdest(0a).
+- We need XOR to result as 1010 which is the binary number of 0a.
+- We have the first value input of codesize which is 1100(binary of 12 bytes).
+- XOR, if bits are the same result is 0, and if they are different it is 1.
+- 1111-x = 1010, so we need 0101, which is 6 in binary
+----------------------------------------------------------------------------
+Puzzle 5:
+
+00      34          CALLVALUE
+01      80          DUP1
+02      02          MUL
+03      610100      PUSH2 0100
+06      14          EQ
+07      600C        PUSH1 0C
+09      57          JUMPI
+0A      FD          REVERT
+0B      FD          REVERT
+0C      5B          JUMPDEST
+0D      00          STOP
+0E      FD          REVERT
+0F      FD          REVERT
+
+- We need to jump(09) to jumpdest(0C).
+- jumpi will pop 2 values from the stack, where first value is where it needs to jump to and second whether it should jump or not.
+- Therefore, we need Callvalue * DUP1 = 100
+- 16 = 10 hex. so msg.value =16
+----------------------------------------------------------------------------
+Puzzle 6:
+
+00      6000      PUSH1 00
+02      35        CALLDATALOAD
+03      56        JUMP
+04      FD        REVERT
+05      FD        REVERT
+06      FD        REVERT
+07      FD        REVERT
+08      FD        REVERT
+09      FD        REVERT
+0A      5B        JUMPDEST
+0B      00        STOP
+
+- We need to jump(03) to jumpdest(0a).
+- CallDataLoad will load a 32byte representation of the jumpdest.
+- so 10 in bytes32 = 0x000000000000000000000000000000000000000000000000000000000000000a
+----------------------------------------------------------------------------
+Puzzle 7:
+
+00      36        CALLDATASIZE
+01      6000      PUSH1 00
+03      80        DUP1
+04      37        CALLDATACOPY
+05      36        CALLDATASIZE
+06      6000      PUSH1 00
+08      6000      PUSH1 00
+0A      F0        CREATE
+0B      3B        EXTCODESIZE
+0C      6001      PUSH1 01
+0E      14        EQ
+0F      6013      PUSH1 13
+11      57        JUMPI
+12      FD        REVERT
+13      5B        JUMPDEST
+14      00        STOP
+
+- We need to jumpi(11) to jumpdest(13)
+- EQ will compare the result of EXTCODESIZE with 1 (PUSH1).
+- Create will deploy the contract.
+- EXTCODESIZE will calculate the deployed contract code size.
+- So EXTCODESIZE will return 1 if deployed code only has 1 instruction to follow, so we just need to return 1 byte.
+60          PUSH1                      01
+60          PUSH1                      00 
+F3          RETURN
+== 0x60016000F3
+----------------------------------------------------------------------------
+Puzzle 8:
+
+00      36        CALLDATASIZE //23
+01      6000      PUSH1 00
+03      80        DUP1
+04      37        CALLDATACOPY
+05      36        CALLDATASIZE
+06      6000      PUSH1 00
+08      6000      PUSH1 00
+0A      F0        CREATE
+0B      6000      PUSH1 00
+0D      80        DUP1
+0E      80        DUP1
+0F      80        DUP1
+10      80        DUP1
+11      94        SWAP5
+12      5A        GAS
+13      F1        CALL
+14      6000      PUSH1 00
+16      14        EQ
+17      601B      PUSH1 1B
+19      57        JUMPI
+1A      FD        REVERT
+1B      5B        JUMPDEST
+1C      00        STOP
+
+- We need to jump(19) to jumpdest(1B).
+- The call after the create contract will return 1 if it is successful in creating the contract, but we need it to respond with 0
+because EQ will compare it's result with 0.
+- So we need to push the revert opcode and store it into memory, the following codes are needed,
+60          PUSH1                      FD
+60          PUSH1                      00 
+53          MSTORE8
+60          PUSH1                      01
+60          PUSH1                      00 
+F3          RETURN
+-this will result in a calldata of : 0x60FD60005360016000F3
+----------------------------------------------------------------------------
+Puzzle 9:
+
+00      36        CALLDATASIZE
+01      6003      PUSH1 03
+03      10        LT
+04      6009      PUSH1 09
+06      57        JUMPI
+07      FD        REVERT
+08      FD        REVERT
+09      5B        JUMPDEST
+0A      34        CALLVALUE
+0B      36        CALLDATASIZE
+0C      02        MUL
+0D      6008      PUSH1 08
+0F      14        EQ
+10      6014      PUSH1 14
+12      57        JUMPI
+13      FD        REVERT
+14      5B        JUMPDEST
+15      00        STOP
+
+- We need to jump(06) to jumpdest(09) and then jump(12) to jumpdest(14).
+- to meet the first jump, we need 03 < calldatasize.
+- to meet the second jump, we need callvalue * calldatasize = 08,
+- first answer is 2 (the call value),
+- CallDataSize: 4 bytes = 0x00000000 
