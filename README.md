@@ -1,7 +1,7 @@
 # Ethereum Challenges
 
 ## Repository Overview
-The following repository contains solutions to the various challenges you can find in Ethereum
+The following repository contains solutions to the various challenges you can find for Ethereum
 
 ## Capture The Ether
 You can find the challenges at this url:
