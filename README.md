@@ -1,30 +1,23 @@
 # Ethereum Challenges
 
-## Repository Overview
-The following repository contains solutions to the various challenges you can find for Ethereum
+## 🧠 Overview
+This repository contains my solutions and explorations of various Ethereum security and smart contract challenges. These challenges are designed to sharpen your understanding of the EVM, Solidity, and common vulnerabilities in decentralized applications.
 
-## Capture The Ether
-You can find the challenges at this url:
-[https://github.com/nicobevilacqua/CaptureTheEtherHardhat](https://github.com/nicobevilacqua/CaptureTheEtherHardhat)
+## 🧩 Challenge Platforms
 
-## EVM Puzzles
-You can find the challenges at this url:
-[https://github.com/fvictorio](https://github.com/fvictorio/evm-puzzles)
+### [Capture the Ether](https://github.com/nicobevilacqua/CaptureTheEtherHardhat)
+A series of smart contract puzzles that teach you about Solidity security. This version uses Hardhat for a modern development environment.
 
-## Damn Vulnerable Defi
-You can find the challenges at this url:
-[https://github.com/theredguild/damn-vulnerable-defi](https://github.com/theredguild/damn-vulnerable-defi)
+### [EVM Puzzles](https://github.com/fvictorio/evm-puzzles)
+A collection of puzzles that test our understanding of the Ethereum Virtual Machine and low-level Solidity behaviours (Opcodes/YUL).
 
-## Ethernaut
-You can find the challenges at this url:
-[https://ethernaut.openzeppelin.com](https://ethernaut.openzeppelin.com)
+### [Damn Vulnerable DeFi](https://github.com/theredguild/damn-vulnerable-defi)
+A set of DeFi-focused challenges that replicate real-world vulnerabilities and attack vectors in decentralized financial protocols.
 
-#### Resources
-To see all reentracy attacks to date:
-[https://github.com/pcaversaccio/reentrancy-attacks](https://github.com/pcaversaccio/reentrancy-attacks)
+### [Ethernaut](https://ethernaut.openzeppelin.com)
+An interactive Web3-based game by OpenZeppelin that helps you learn Ethereum smart contract security through progressively harder hacking challenges.
 
-To see all smart contract weakness classifications:
-[https://swcregistry.io/](https://swcregistry.io/)
-
-To see all Ethereum Improvement Proposals:
-[https://eips.ethereum.org/](https://eips.ethereum.org/)
+## 📚 Resources
+- ♻ [Reentrancy Attacks Reference](https://github.com/pcaversaccio/reentrancy-attacks) - A comprehensive list of documented reentrancy attacks in the Ethereum ecosystem.
+- 🛡 [Smart Contract Weakness Classification Registry (SWC)](https://swcregistry.io/) - A standardized list of known smart contract weaknesses and vulnerabilities.
+- 📜 [Ethereum Improvement Proposals (EIPs)](https://eips.ethereum.org/) - Official specificatios for improvements and standards in the ethereum ecosystem.
